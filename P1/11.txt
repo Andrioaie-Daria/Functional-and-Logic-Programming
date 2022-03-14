@@ -1,0 +1,31 @@
+b. Write a predicate to create the sublist (lm, …, ln) from the list (l1,…, lk).
+
+create_sublist(l1...lk, m, n, p)
+	= [], if p > n
+	= [], if k = 0
+	= create_sublist(l2...lk, m, n,p+1), if p<m
+	= l1 U create_sublist(l2...lk, m, n, p+1), otherwise
+
+
+mainSublist(l1....lk, m,n) = create_sublist(l1...lk, m, n, p), if m<n, m>0
+%mainSublist(L-list, M-int, N-int, R-result)
+mainSublist(L, M, N, R):-
+    M<N,
+    M>0,
+    create_sublist(L, M, N, 1, R).
+
+%create_sublist(L, M, N, P-current position, R)
+create_sublist([], _, _, _, []):-
+    !.
+create_sublist(_, _, N, P, []):-
+    P>N,
+    !.
+create_sublist([_|T], M, N, P, R):-
+    P<M,
+    !,
+    P1 is P+1,
+    create_sublist(T, M, N, P1, R).
+
+create_sublist([H|T], M, N, P, [H|R]):-
+    P1 is P+1,
+    create_sublist(T, M, N, P1, R).

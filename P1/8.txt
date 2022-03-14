@@ -1,0 +1,13 @@
+8.
+a. Write a predicate to determine if a list has even numbers of elements without counting the elements from
+the list.
+
+even_list(l1...ln)
+	= true, if n=0
+	= false, if n=1
+	= even_list(l3...ln), otherwise
+
+%even_list(L-list), simple way
+
+even_list([]).
+even_list([_,_|T]):- even_list(T).

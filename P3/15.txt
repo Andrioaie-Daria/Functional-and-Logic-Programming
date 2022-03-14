@@ -1,0 +1,41 @@
+15. For a given n, positive, determine all decomposition of n as a sum of consecutive natural numbers.
+
+
+
+decompose(N, K)
+	= [], if K>N
+	= K U decompose(N-K, K+1)
+	= decompose(N, K+1)
+
+decompose(N, K, []):-
+	K>N,
+	!.
+
+decompose(N, K, [K|R]):-
+	K1 is K+1,
+	N1 is N-K,
+	decompose(N1, K1, R).
+
+decompose(N, K, R):-
+	K1 is K+1,
+	decompose(N, K1, R).
+
+sum(l1...ln, N)
+	= 0, if n =0
+	= l1 + sum(l2...ln), otherwise.
+
+sum([], 0):-!.
+sum([H|T], R):-
+	sum(T, R1),
+	R is R1+H.
+
+
+one_solution(N, K, S)
+	= check_sum(decompose(N, K), N)
+
+one_solution(N, K, D):-
+	decompose(N, K, D),
+	sum(D, N).
+
+all_sols(N, R):-findall(D, one_solution(N, 1, D), R).
+

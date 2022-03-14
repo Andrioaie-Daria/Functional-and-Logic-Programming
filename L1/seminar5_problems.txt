@@ -1,0 +1,69 @@
+1. Define a function in Lisp which merges, without keeping the doubles, two sorted linear lists.
+
+merge(l1...ln, k1...km)
+	= l1...ln, if m = 0
+	= k1...km, if n=0
+	= l1 U merge(l2..ln, k1..km), if l1<k1
+	= k1 U merge(l1...ln, k2...km), if k1<l1
+	= merge(l2...ln, k1....km), if l1==k1
+
+
+(defun my_merge(l k)
+  (cond 
+      ((null l) k)
+      ((null k) l)
+      ((< (car l) (car k)) (cons (car l) (my_merge (cdr l) k)))
+      ((< (car k) (car l)) (cons (car k) (my_merge l (cdr k))))
+      (t (my_merge (cdr l) k))
+   )
+)
+
+
+2. Define a function to remove all the occurrences of an element from a nonlinear list. 
+
+removeElem(l1...ln, e)
+	= [], if n = 0
+	= removeElem(l2...ln, e), if l1 is an atom and l1=e
+	= l1 U removeElem(l2....ln, e), if l1 is an atom and l1 != e
+	= removeElem(l1, e) U removeElem(l2...ln, e), if l1 is a list
+
+
+(defun removeElem(l e)
+  (cond
+      ((null l) nil)
+      ((and (atom (car l)) (= (car l) e)) (removeElem (cdr l) e))
+      ((and (atom (car l)) (/= (car l) e)) (cons (car l)(removeElem (cdr l) e) ))
+      ((listp (car l)) (cons (removeElem (car l) e) (removeElem (cdr l) e)))
+)
+)
+
+
+4. Given a linear list, add elements from N to N.
+
+add(l1...ln, e p ,N)
+	= [], if n=0
+	= l1 U add(l2...ln, p+1, N), if p != N
+	= e U add(l2...ln, 1, N), if p == N
+
+
+(defun add (l e p n)
+  (cond
+      ((null l) nil)
+      ((\= p n) (cons (car l) (add (cdr l) e (+ 1 p) n)))
+      (t (cons e (add l e 1 n)))
+   )
+)
+
+(defun add2 (l e p n)
+  (cond
+      ((null l) nil)
+      ((equal 0 (mod p n)) (cons e (add2 l e (+ 1 p) n)))
+      (t (cons (car l) (add2 (cdr l) e (+ 1 p) n)))
+   )
+)
+
+
+(defun mainAdd(l e n)
+       (add2 l e 1 n)
+)
+

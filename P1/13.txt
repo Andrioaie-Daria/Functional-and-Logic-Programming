@@ -1,0 +1,33 @@
+% Model matematic:
+% count_occurences(l1...ln, e) =
+% 	0, n = 0
+% 	1 + count_occurences(l2...ln, e), l1 = e
+% 	count_occurences(l2...ln, e), otherwise
+ 	
+% count_occurences(L:list, E:number, R:number)
+% count_occurences(i, i, o)
+
+count_occurences([], _, 0).
+count_occurences([H|T], E, R) :- H =:= E,
+    count_occurences(T, E, R1),
+    R is R1 + 1.
+count_occurences([H|T], E, R) :- H =\= E,
+    count_occurences(T, E, R).
+
+
+% Model matematic:
+% list_to_set(l1...ln) =
+% 	[], n = 0
+% 	l1 + list_to_set(l2...ln), count_occurences(l2...ln, l1) = 0
+% 	list_to_set(l2...ln), otherwise
+ 	
+% list_to_set(L:list, R:list)
+% list_to_set(i, o)
+
+list_to_set([], []) :- !.
+list_to_set([H|T], [H|R]) :- 
+    count_occurences(T, H, RC),
+    RC =:= 0,
+    list_to_set(T, R), !.
+list_to_set([_|T], R) :-
+    list_to_set(T, R).

@@ -1,0 +1,102 @@
+3.
+a. Define a predicate to remove from a list all repetitive elements.
+Eg.: l=[1,2,1,4,1,3,4] => l=[2,3])
+b. Remove all occurrence of a maximum value from a list on integer numbers.
+
+% remove_repetitive(l1...ln) =
+% 	[], n = 0
+% 	l1 + remove_repetitive(l2...ln), count_occurences(l1...ln, l1) = 1
+% 	remove_repetitive(remove_occurences(l1...ln, l1)), count_occurences(l1...ln, l1) != 1
+
+%remove_repetitive(L-list, R-result)
+%flow(i,i), (i,o)
+
+remove_repetitive([], []):-!.
+remove_repetitive([H|T], R):-
+    count_occ(T, H, O),
+    O > 0,
+    !,
+    remove_occurences(T, H, Removed),
+    remove_repetitive(Removed, R).
+
+remove_repetitive([H|T], [H|TR]):-
+    remove_repetitive(T, TR).
+
+
+
+% remove_occurences(l1...ln, e) =
+%	[], n = 0
+%	remove_occurences(l2...ln, e), l1 = e
+%	l1 + remove_occurences(l2...ln, e), l1 != e
+
+%remove_occurences(L-list, V-integer, R -result list)
+% flow(i,i,o), (i,i,i)
+
+remove_occurences([],_, []).
+
+remove_occurences([H|T], V, TR):-
+    H =:= V,
+    !,
+    remove_occurences(T, V, TR).
+
+
+remove_occurences([H|T], V, [H|TR]):-
+    remove_occurences(T, V, TR).
+
+
+% count_occurences(l1...ln, e) =
+%	0, n = 0
+%	1 + count_occurences(l2...ln, e), e = l1
+%	count_occurences(l2...ln, e), e != l1
+
+
+%count_occurrences(L-list, E-integer, R-result)
+%flow(i,i,i), (i,i,o)
+
+count_occ([], _, 0):-!.
+count_occ([E|T], E, R):-
+    !,
+    count_occ(T, E, R1),
+    R is 1 + R1.
+
+count_occ([_|T], E, R):-
+    count_occ(T, E, R).
+
+
+
+----------- b --------------
+
+% remove_maxim(l1...ln) =
+% 	remove_occurences(l1...ln, maxim_list(l1...ln))	
+
+%remove_maximum(L-list, R-result)
+remove_maximum([], []).
+remove_maximum(L, R):-
+    maximum_from_list(L, ML),
+    remove_occurences(L, ML, R).
+
+
+% maxim_list(l1...ln) =
+% 	l1, n = 1
+% 	maxim_number(l1, maxim_list(l2...ln))
+
+%maximum_from_list(L-list, R-result)
+
+maximum_from_list([], 0).
+maximum_from_list([H|T], R):-
+    maximum_from_list(T, TR),
+    maximum_number(H, TR , R).
+    
+
+% maxim_number(a, b) = 
+% 	a, a >= b
+% 	b a < b
+
+
+%maximum_number(M-integer, N-integer, R-result)
+
+maximum_number(M, N, M):-
+    M>N,
+    !.
+maximum_number(_, N, N).
+

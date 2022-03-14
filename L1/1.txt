@@ -1,0 +1,90 @@
+1.
+a) Write a function to return the n-th element of a list, or NIL if such an element does not exist.
+b) Write a function to check whether an atom E is a member of a list which is not necessarily linear.
+c) Write a function to determine the list of all sublists of a given list, on any level.
+ A sublist is either the list itself, or any element that is a list, at any level. Example:
+ (1 2 (3 (4 5) (6 7)) 8 (9 10)) => 5 sublists :
+ ( (1 2 (3 (4 5) (6 7)) 8 (9 10)) (3 (4 5) (6 7)) (4 5) (6 7) (9 10) )
+d) Write a function to transform a linear list into a set.
+
+a.
+
+nElem(l1.....lk, n)
+	= nil, if k=0
+	= l1, if n=1
+	= nElem(l2...lk, n-1), otherwise
+
+(defun nElem(l n)
+  (cond
+      ((null l) nil)
+      ((equal 1 n) (car l))
+      (t (nElem (cdr l) (- n 1)))
+   )
+)
+
+
+b.
+
+checkMember(l1...ln, E)
+	= nil, if n=0
+	= T, if atom(l1) and l1=E
+	= checkMember(l2...ln, E), if atom(l1) and l1!=e
+	= checkMember(l1, E) OR checkMember(l2..ln, e), if l1 is a list  
+
+
+(defun isMember(l e)
+  (cond
+      ((null l) nil)
+      ((and (atom (car l)) (= (car l) e)) T)
+      ((atom (car l)) (isMember (cdr l) e))
+      ((listp (car l))( or (isMember (car l) e) (isMember (cdr l) e)))
+   )
+)
+
+c.
+
+all_sublists(l)
+	= [], if l is an atom
+	= l U all_sublists(l1) U .... all_sublists(ln), if l is a list
+
+
+(defun all_sublists(l)
+  (cond
+      ((atom l) nil)
+      (t (apply 'append (list l) (mapcar 'all_sublists l)))
+  )
+
+
+d.
+
+nr_occurrences(l1...ln, e)
+	= 0, if n=0
+	= 1 + nr_occurrences(l2...ln, e), if l1 = e and l1 is a number
+	= 1 + nr_occurrences(l2...ln, e), if equal(l1, e), if l1 is an non-numerical atom
+	= nr_occurrences(l2...ln, e), otherwise
+
+
+
+list_to_set(l1...ln)
+	= [], if n=0
+	= l1 U list_to_set(l2...ln), if nr_occurrences(l2...ln, l1) = 0
+	= list_to_set(l2...ln), otherwise
+
+
+
+(defun nrOcc(l e)
+  (cond
+      ((null l) 0)
+      ((and (numberp (car l)) (= (car l) e)) (+ 1 (nrOcc (cdr l) e)))
+      ((and (atom (car l)) (equal (car l) e)) (+ 1 (nrOcc (cdr l) e)))
+      (t (nrOcc (cdr l) e))
+   )
+)
+
+(defun list_to_set(l)
+  (cond
+      ((null l) nil)
+      ((= 0 (nrOcc (cdr l) (car l))) (cons (car l) (list_to_set (cdr l))))
+      (t (list_to_set (cdr l)))
+   )
+)

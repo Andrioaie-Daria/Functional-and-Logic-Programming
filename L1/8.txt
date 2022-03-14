@@ -1,0 +1,130 @@
+8.a)Write a function to return the difference of two sets.
+
+difference(l1...ln, k1...km) =
+	= [], if n = 0
+	= l1 U difference(l2 ... ln, k1 ... km), if contains(k1.. km, l1) = false
+	= difference(l2 ... ln, k1 ... km), otherwise
+
+contains(l1 ... ln, e)=
+	= false, if n= 0
+	= true, if l1 == e
+	= contains(l2 ... ln, e), otherwise
+
+(defun contains(l e)
+  (cond
+  ((null l) nil)
+  ((equal (car l) e) T)
+  (t (contains (cdr l) e) ))
+) 
+
+
+(defun difference(l k)
+  (cond
+  ((null l) nil)
+  ((not (contains k (car l))) (cons (car l) (difference (cdr l) k) ))
+  (t (difference (cdr l) k)))
+)
+
+
+b)Write a function to reverse a list with its all sublists, on all levels.
+
+
+reverse(l1 ... ln)
+	= [], if n=0
+	= concatenate(reverse(l2 ... ln), l1), if l1 is a number
+	= concatenate(reverse(l2 ... ln, reverse(l1))), if l1 is a list
+
+
+concatenate(l1 ... ln, k1 ... km)
+	= k1 ... km, if n = 0
+	= l1 U concatenate(l2 ... ln, k1 ... km), otherwise
+
+(defun my_concatenate(l k)
+  (cond
+   ((null l) k)
+   (t (cons (car l) (my_concatenate (cdr l) k )))
+))
+
+(defun reverselist(l)
+  (cond
+   ((null l) nil)
+   ((listp (car l)) my_concatenate (reverselist(cdr l)) (list (reverselist(car l))) )
+   (t (my_concatenate (reverselist(cdr l)) (list(car l))))
+   )
+)
+
+
+c)Write a function to return the list of the first elements of all 
+list elements of a given list with an odd number of elements at superficial level. 
+Example:(1 2 (3 (4 5) (6 7)) 8 (9 10 11)) => (1 3 9).
+
+my_length(l1 ... ln) = 
+	= 0, if n=0
+	= 1 + my_length(l2 ... ln)
+
+odd_length(l1 ... ln)
+	= true, if my_length(l1 ... ln) % 2 ==1
+	= false, otherwise
+
+first_elems(l) =
+	= nil, if l is an atom
+	= l1 U first_elems(l2) U ... first_elems(ln), if odd_length(l), l is a list
+	= first_elems(l2) U ... first_elems(ln), otherwise
+
+
+(defun my_length(l)
+(cond
+     ((null l) 0)
+     (t ( + 1 (my_length (cdr l))))
+)
+)
+
+(defun odd_length(l)
+(cond
+    (( zerop ( mod (my_length l) 2)) nil)
+    (t )
+)
+)
+
+
+(defun first_elems (l)
+    (cond
+        ((atom l) nil)
+        ((odd_length l) (cons (car l) (apply 'append (mapcar 'first_elems (cdr l)))))
+        (T (apply 'append (mapcar 'first_elems (cdr l))))
+     )
+)
+
+d)Write a function to return the sum of all numerical atoms in a list
+at superficial level.
+
+(1 3 (4 5))
+
+sum_of_numbers(l1 ... ln) = 
+	= 0, if n=0
+	= l1 + sum_of_numbers(l2 ... ln), if l1 is a number
+	= sum_of_numbers(l2 ... ln), otherwise
+
+
+
+(defun sum_of_numbers(l)
+  (cond 
+   ((null l) 0)
+   ((numberp (car l)) (+ (car l) (sum_of_numbers (cdr l))))
+   (t (sum_of_numbers (cdr l)))
+   )
+)
+
+
+sum_of_all_numbers(l)=
+	= l , if l is a number
+	= 0, if l is an atom
+	= l1 + l2 + .. + ln, if l is a list
+
+(defun sum_of_all_numbers (l)
+    (cond
+        ((numberp l) l)
+        ((atom l) 0)
+        ((listp l) (apply '+ (mapcar 'sum_of_all_numbers l)))
+    )
+)

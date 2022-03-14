@@ -1,0 +1,6 @@
+The functions already documented in problem 12.a were used.
+
+addDivisorsInSublists(l1 l2 ... ln)=
+	= if n=0, return []
+	= if is_list(l1), return addDivisors(l1) U addDivisorsInSublists(l2 .. ln)
+	= otherwise, return l1 U addDivisorsInSublists(l2 .. ln)

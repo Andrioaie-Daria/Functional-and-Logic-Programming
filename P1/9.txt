@@ -1,0 +1,23 @@
+b. Define a predicate to determine the greatest common divisor of all numbers from a list.
+
+gcd_2_numbers(a,b)
+	= a, if b=0
+	= gcd(b, a%b), otherwise
+
+gcd_list(l1....ln)
+	= 0, if n = 0
+	= gcd_2_numbers(l1, gcd_list(l2...ln))
+
+%gdc_2 numbers(A-int, B-int, R-int)
+gcd_2_numbers(A, 0, A):-
+    !.
+gcd_2_numbers(A, B, R):-
+    C is A mod B,
+    gcd_2_numbers(B, C, R).
+
+
+%gdc_list(L-list, R-int)
+gcd_list([], 0).
+gcd_list([H|T], R):-
+    gcd_list(T, RT),
+    gcd_2_numbers(H, RT, R).

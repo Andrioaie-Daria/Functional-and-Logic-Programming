@@ -1,0 +1,39 @@
+% 12.a. Define a predicate to add after every element from a list, the divisors of that number.
+
+%divMain(E-integer, R-result list)
+%flow(i,i), (i,o)
+divMain(E, R):-divisors(E, 2, R).
+
+
+%divisors(E-integer, D-current divisor, R-result list)
+%flow(i,i,o), (i,i,i)
+divisors(E, D, []):-
+    D>=E,
+    !.
+
+divisors(E, D, [D|TR]):-
+    E mod D =:= 0,
+    !,
+    D1 is D+1,
+    divisors(E, D1, TR).
+
+divisors(E, D, TR):-
+    D1 is D+1,
+    divisors(E, D1, TR).
+
+
+% concatenate(L1-first list, L2- second list, R-result list).
+% flow(i,i,i), (i,i,o)
+concatenate([], L2, L2).
+
+concatenate([H|T], L2, [H|TR]):-
+    concatenate(T, L2, TR).
+
+% addDivisors(L-input list, R-result list)
+%flow(i,i), (i,o)
+
+addDivisors([], []).
+addDivisors([H|T], [H|CR]):-
+    divMain(H,D),
+    addDivisors(T, TR),
+    concatenate(D, TR, CR).

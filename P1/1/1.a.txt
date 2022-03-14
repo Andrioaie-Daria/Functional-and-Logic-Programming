@@ -1,0 +1,39 @@
+% 1a. Write a predicate to determine the lowest common multiple of a list formed from integer numbers.
+
+-------------- MODEL----------------------------
+
+lowestCommonMultiple(L1, L2, .. Ln)=
+	= if n = 0, then return 1
+	= otherwise,    lcmOfNextElements = lowestCommonMultiple(L2, L3, .. Ln)
+			return [L1 * lcmOfNextElements] / gcd(L1, lcmOfNextElements)
+
+/// lcm(a,b) = (a * b)/gcd(a,b)
+
+gcd(x, y) = 
+        = if y = 0, return x
+	= otherwise, return gcd(y, x%y)
+
+
+---------- PROLOG -------------------------------
+
+
+%gcd(A-integer, B-integer, R-result)
+%flow(i,i,i), (i,i,o)
+
+gcd(A, 0, A):-
+    !.
+gcd(A, B, R):-
+    REM is A mod B,
+    gcd(B, REM, R).
+
+
+
+%lcm(L-list, R-result)
+%flow (i,i), (i,o)
+
+lcm([], 1).
+lcm([H|T], R):-
+	lcm(T,RNEXT),
+	P is H*RNEXT,
+	G is gcd(H, RNEXT),
+	R is P div G.

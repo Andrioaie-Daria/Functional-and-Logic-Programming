@@ -1,0 +1,23 @@
+;5. Write a function that computes the sum of even numbers and the decrease 
+the sum of odd numbers, at any level of a list.
+
+sumEvenOdd(l)
+	= l, if l is an even number
+	= -l, if l is an odd number
+	= 0, if l is an atom
+	= + (sumEvenOdd(li)), if l is a list
+
+(defun sumEvenOdd(l)
+  (cond
+       ((and (numberp l) (= 1 (mod l 2))) (- 0 l))
+       ((numberp l) l)
+       ((atom l) 0)
+       (t (apply '+ (mapcar #'sumEvenOdd l)))
+   )
+)
+
+(defun mainSumEvenOdd(l)
+  (cond
+      ((checkNumeric l) (sumEvenOdd l))
+   )
+)

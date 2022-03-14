@@ -1,0 +1,18 @@
+10. Define a function that replaces one node with another one in a n-tree represented as: root
+list_of_nodes_subtree1... list_of_nodes_subtreen)
+Eg: tree is (a (b (c)) (d) (e (f))) and node 'b' will be replace with node 'g' => tree (a (g (c)) (d) (e (f)))}
+
+
+
+replaceNode(l, e, f)
+	= if l is an atom and l=e, f
+	= if l is an atom and l!=e, l
+	= if l is a list, U replaceNode(li, e, f) 
+
+(defun replaceNode (l e f)
+  (cond
+       ((and (atom l) (equal e l)) f)
+       ((atom l) l)
+       (t (mapcar #'(lambda(a) (replaceNode a e f)) l))
+   )
+)

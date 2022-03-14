@@ -1,0 +1,19 @@
+divisors(e, d)=
+	= if d>=e, return []
+	= id e%d == 0, return d U divisors(e, d+1)
+	= otherwise, return divisors(e, d+1)
+
+divMain(e) = divisors(e, 2)
+
+
+
+concatenate(l1 l2 .. ln, k1 k2 ... km)=
+	= if n = 0, return k1 k2 .. km
+	= otherwise, l1 U concatenate(l2 l3 .. ln, k1 k2 .. km)
+
+
+addDivisors(l1 l2 ... ln) =
+	= if n=0, return []
+	= otherwise 
+		d1d2..dm = divMain(l1)
+		return l1 U concatenate(d1d2...dm, addDivisors(l2 .. ln))

@@ -1,0 +1,11 @@
+b) Write a function to get from a given list the list of all atoms, on any
+ level, but reverse order. Example:
+ (((A B) C) (D E)) ==> (E D C B A)
+
+
+liniarize the list, then reverse it
+
+
+liniarize(l)
+	= [l], if l is an atom
+	= U liniarize(li), if l is a list (reunion using append)

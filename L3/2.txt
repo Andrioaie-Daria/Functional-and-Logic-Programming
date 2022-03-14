@@ -1,0 +1,41 @@
+2. Write a function that returns the sum of numeric atoms in a list, at any level.
+
+checkNumeric(l)
+	= T, if l is a number
+	= NIL, if l is a non-numeric atom
+	= some (checkNumeric(li)), if l is a list
+
+sumOfNumbers(l)
+	= l, if l is a number
+	= 0, if l is a non-numeric atom
+	= + (sumOfNumbers(li)), if l is a list
+
+
+mainSum(l)
+	= sumOfNumbers(l), if checkNumeric(l)
+
+
+(defun checkNumeric(l)
+  (cond
+       ((numberp l) T)
+       ((atom l) NIL)
+       (t (some #'identity (mapcar #'checkNumeric l)))
+   )
+)
+
+
+(defun sumOfNumbers(l)
+  (cond
+      ((numberp l) l)
+      ((atom l) 0)
+      (t (apply '+ (mapcar #'sumOfNumbers l)))
+   )
+)
+
+(defun mainSum(l)
+  (cond
+      ((checkNumeric l) (sumOfNumbers l))
+   )
+)
+
+

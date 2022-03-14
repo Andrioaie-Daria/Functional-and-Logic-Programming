@@ -1,0 +1,46 @@
+% 1.b. Write a predicate to add a value v after 1-st, 2-nd, 4-th, 8-th, ... element in a list.
+
+
+------------------------ MODEL ---------------------------------------- 
+
+add(l1 l2 l3 ... ln, v) = addAfterPowerTwo(l1 l2 ... ln, v, 1, 1).
+
+addAfterPower(l1 l2 ... ln, v, k, p) = 
+	= if n=0, then return []
+	= if k=p, then return l1 U v U AddAfterPower(l2 l3 .. ln, v, k+1, p*2)
+	= otherwise, return l1 U AddAfterPower(l2 l3 ... ln, v, k+1, p).
+
+
+
+
+------------------------ PROLOG ----------------------------------------
+
+
+% add(L-list, V -integer, R- result list)
+%flow(i,i,o), (i,i,i)
+
+addValue(L, V, R) :- addAfterPower(L, V, 1, 1, R), !.
+
+
+% addAfterPower(L-list, V-integer, K - integer, P-integer, R-result list)
+% flow(i,i,i,i,o), (i,i,i,i,i).
+
+
+addAfterPower([], _, _, _, []).
+addAfterPower([H|T], V, K, P, [H|TR]):-
+	K =\= P,
+	NEXTK is K+1,
+	addAfterPower(T, V, NEXTK, P, TR).
+
+
+addAfterPower([H|T], V, K, P, [H, V|TR]):-
+	K =:= P,
+	NEXTK is K+1,
+	NEXTP is P*2,
+	addAfterPower(T, V, NEXTK, NEXTP, TR).
+	
+
+
+
+
+

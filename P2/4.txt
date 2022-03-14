@@ -1,0 +1,7 @@
+4.
+a. Write a predicate to determine the sum of two numbers written in list representation
+
+sum(l1...ln, k1...km, f)
+	= l1...ln, if m = 0
+	= k1...km, if n = 0
+	= 

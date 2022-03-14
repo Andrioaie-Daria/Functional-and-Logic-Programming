@@ -1,0 +1,19 @@
+8.a. Determine the lowest common multiple of the elements from a list.
+
+	lowestCommonMultiple(L1, L2, .. Ln)=
+		= if n = 0, then return 1
+		= otherwise, return [L1 * lowestCommonMultiple(L2, L3, .. Ln)] / gcd(L1, lowestCommonMultiple(L2, L3, .. Ln))
+
+/// lcm(a,b) = (a * b)/gcd(a,b)
+
+	gcd(x, y) = 
+        = if y = 0, then return x
+		= otherwise, return gcd(y, x%y)
+
+
+8.b  Substitute in a list, all occurrences of a value e with a value e1.
+
+	substituteOccurrences(L1, L2, .. Ln, value, otherValue) =
+		= if n = 0, then return []
+		= if L1 = value, return otherValue U substituteOccurrences(L2.. Ln, value, otherValue)
+		= otherwise, return L1 U substituteOccurrences(L2 .. Ln, value, otherValue)

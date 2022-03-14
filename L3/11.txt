@@ -1,0 +1,16 @@
+11. Write a function to determine the depth of a list.
+
+depthOfList(l,currentDepth)
+	= currentDepth, if l is an atom
+	= max(depthOfList(li, currentDepth + 1)), if l is a list
+
+(defun depthOfList(l current)
+  (cond
+      ((atom l) current)
+      (t (apply #'max(mapcar #'(lambda (a) (depthOfList a (+ 1 current))) l)))
+   )
+)
+
+(defun mainDepth(l)
+  (depthOfList l 0)
+)

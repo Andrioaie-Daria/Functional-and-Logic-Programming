@@ -1,0 +1,35 @@
+7.
+a. Write a predicate to compute the intersection of two sets.
+b. Write a predicate to create a list (m, ..., n) of all integer numbers from the interval [m, n].
+
+a.
+intersection(l1...ln, k1....km)
+	= [], if n = 0 or m = 0
+	= l1 U intersection(l2 ... ln, k1 ... km), if contains(k1...km, l1)
+	= intersection(l2...ln, k1..km), otherwise
+
+%intersection(L-list, M-list, R-result)
+
+intersection([], _, []):-!.
+intersection(_, [], []):-!.
+intersection([H|T], M, [H|R]):-
+    contains(M, H),
+    !,
+    intersection(T, M, R).
+intersection([_|T], M, R):-
+    intersection(T, M, R).
+
+
+b.
+interval(m,n)
+	= [], if m > n
+	= m U interval(m+1, n), otherwise
+
+
+%interval(M-integer, N-integer, R-result)
+interval(M, N, []):-
+    M>N,
+    !.
+interval(M, N, [M|R]):-
+    M1 is M+1,
+    interval(M1, N, R).

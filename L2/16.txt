@@ -1,0 +1,37 @@
+16. Determine if a tree of type (2) is ballanced (the difference between the depth of two subtrees is 
+equal to 1)
+
+; absoluteDiff(a, b) = 
+; = a - b, if a > b
+; = b - a, otherwise
+
+
+(defun absoluteDiff(a b)
+  (cond
+    ((> a b) (- a b))
+    (t (- b a))
+  )
+)
+
+isBalanced(l1l2l3)
+	= true, if tree is empty
+	= nil, if & absDifference(depth(l2), depth(l3)) > 1
+	= isBalanced(l2) and isBalanced(l3), otherwise
+
+
+(defun absoluteDiff(a b)
+  (cond
+    ((> a b) (- a b))
+    (t (- b a))
+  )
+)
+
+
+(defun isBalanced(l)
+  (cond
+       ((null l) t)
+       ((> (absoluteDiff (mainDepth (cadr l)) (mainDepth (caddr l))) 1) nil)
+       (t (and (isBalanced (cadr l)) (isBalanced (caddr l))))
+   )
+)
+	

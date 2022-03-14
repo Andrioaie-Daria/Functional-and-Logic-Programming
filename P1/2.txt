@@ -1,0 +1,62 @@
+2.a. Write a predicate to remove all occurrences of a certain atom from a list.
+b. Define a predicate to produce a list of pairs (atom n) from an initial list of atoms. In this initial list atom has
+n occurrences.
+Eg.: numberatom([1, 2, 1, 2, 1, 3, 1], X) => X = [[1, 4], [2, 2], [3, 1]].
+
+% remove_occurences(l1...ln, e) =
+%	[], n = 0
+%	remove_occurences(l2...ln, e), l1 = e
+%	l1 + remove_occurences(l2...ln, e), l1 != e
+
+%remove_occurences(L-list, V-integer, R -result list)
+% flow(i,i,o), (i,i,i)
+
+remove_occurences([],_, []).
+
+remove_occurences([H|T], V, TR):-
+    H =:= V,
+    !,
+    remove_occurences(T, V, TR).
+
+
+remove_occurences([H|T], V, [H|TR]):-
+    remove_occurences(T, V, TR).
+
+
+% b
+
+% Model matematic:
+% count_occurences(l1...ln, e) =
+%	0, n = 0
+%	1 + count_occurences(l2...ln, e), e = l1
+%	count_occurences(l2...ln, e), e != l1
+
+
+%count_occurrences(L-list, E-integer, R-result)
+%flow(i,i,i), (i,i,o)
+
+count_occ([], _, 0):-!.
+count_occ([E|T], E, R):-
+    !,
+    count_occ(T, E, R1),
+    R is 1 + R1.
+
+count_occ([_|T], E, R):-
+    count_occ(T, E, R).
+
+
+% Model matematic:
+% numberatom(l1...ln) =
+%	[], n = 0
+%	[l1, count_occurences(l1...ln, l1)] + numberatom(remove_occurences(l2...ln, l1))
+
+
+%number_atom(L-list, R-result)
+%flow(i,i), (i,o)
+
+number_atom([], []):-!.
+
+number_atom([H|T], [[H,O]|R1]):-
+    count_occ([H|T], H, O),
+    remove_occurences(T, H, Removed),
+    number_atom(Removed, R1).

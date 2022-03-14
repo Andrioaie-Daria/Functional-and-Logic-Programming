@@ -1,0 +1,37 @@
+b. Find the position of the maximum element from a list
+
+
+find_max(l1l2...ln) = 
+	= l1, if n=1
+	= max(l1, find_max(l2...ln)), otherwise
+
+
+find_pos(l1...ln, e, p)
+	= -1, if n=0
+	= p, if l1 = e
+	= find_pos(l2...ln, e, p+1)
+
+find_pos_max(l1...ln) = find_pos(l1....ln, find_max(l1....ln), 1).
+
+%maximum(A-int, B-int)
+maximum(A, B, A):- A>=B, !.
+maximum(_, B, B).
+
+
+%find_max(L-list, R-result)
+find_max([H], H):-!.
+find_max([H|T], R):-
+    find_max(T, RT),
+    maximum(H, RT, R).
+
+%find_pos(L-list, E-int,P-pos, R-result)
+find_pos([], _, _, -1):-!.
+find_pos([E|_], E, P, P):-!.
+find_pos([_|T], E, P, R):-
+	P1 is P+1,
+    find_pos(T, E, P1, R).
+
+%find_pos_max(L-list, R-result)
+find_pos_max(L, R):-
+    find_max(L, M),
+    find_pos(L, M, 1, R).

@@ -1,0 +1,35 @@
+4. Write a function that returns the product of numeric atoms in a list, at any level.
+
+checkNumeric(l)
+	= T, if l is a number
+	= NIL, if l is a non-numeric atom
+	= some (checkNumeric(li)), if l is a list
+
+prod(l)
+	= l, if l is a number
+	= 1, if l is an atom
+	= * (prod(li)), if l is a list
+
+(defun checkNumeric(l)
+  (cond
+       ((numberp l) T)
+       ((atom l) NIL)
+       (t (some #'identity (mapcar #'checkNumeric l)))
+   )
+)
+
+(defun prod(l)
+  (cond
+       ((numberp l) l)
+       ((atom l) 1)
+       (t (apply '* (mapcar #'prod l)))
+   )
+)
+
+(defun mainProd(l)
+  (cond
+      ((checkNumeric l) (prod l))
+
+   )
+)
+

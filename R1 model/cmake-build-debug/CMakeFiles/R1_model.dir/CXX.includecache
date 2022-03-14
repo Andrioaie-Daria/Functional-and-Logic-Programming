@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/daria/Documents/study/facultate/anul 2/Semestrul 1/PFL/R1 model/lista.h
+
+C:/Users/daria/Documents/study/facultate/anul 2/Semestrul 1/PFL/R1 model/main.cpp
+lista.h
+C:/Users/daria/Documents/study/facultate/anul 2/Semestrul 1/PFL/R1 model/lista.h
+iostream
+-
+

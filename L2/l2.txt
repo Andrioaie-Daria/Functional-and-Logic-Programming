@@ -1,0 +1,64 @@
+11.Return the level (and coresponded list of nodes) with maximum number of nodes for a tree
+ of type (2). The level of the root element is 0.
+
+(A (B) (C (D) (E)))       (2)
+
+(main '(A (B) (C (D) (E))))
+(main '(A (B (D (G) (H))(E(I))) (C (F (J (L)))( K))))
+
+; myAppend(l1l2...ln, p1p2...pm) =
+; = p1p2...pm, if n = 0
+; = {l1} U myAppend(l2...ln, p1p2...pm), otherwise
+
+(defun myAppend (l p)
+  (cond
+    ((null l) p)
+    (t (cons (car l) (myAppend (cdr l) p)))
+  )
+)
+
+; myLength(l1l2...ln) = 
+; = 0, if n = 0
+; = 1 + myLength(l2...ln), otherwise
+
+(defun myLength (l)
+  (cond
+    ((null l) 0)
+    (t (+ 1 (myLength (cdr l))))
+  )
+)
+
+; getNodesFromLevel(l1l2l3, level) = 
+; = [], if l1l2l3 is empty
+; = list(l1), if level = 0
+; = myAppend(getNodesFromLevel(l2, level - 1), getNodesFromLevel(l3, level - 1)), otherwise
+
+
+(defun getNodesFromLevel(l lvl) 
+  (cond
+    ((null l) nil)
+    ((equal lvl 0) (list (car l)))
+    (t (myAppend (getNodesFromLevel (cadr l) (- lvl 1)) (getNodesFromLevel (caddr l) (- lvl 1))))
+  )
+)
+
+; getMaxNodes(tree, max, auxMax, maxLevel, currentLevel) = 
+; = list(max, maxLevel), if auxMax  is empty
+; = getMaxNodes(tree, auxMax, getNodesFromLevel(tree, currentLevel + 1),currentLevel ,currentLevel + 1) , if myLength(auxMax) > myLength(max)
+; = getMaxNodes(tree, max, getNodesFromLevel(tree, currentLevel + 1), maxLevel, currentLevel + 1), otherwise
+
+
+; main(tree) = getMaxNodes(tree, [], getNodesFromLevel(tree, 0), -1, 0)
+
+
+(defun getMaxNodes(tree max auxMax maxLevel currentLevel)
+  (cond
+    ((null auxMax) (cons maxLevel max))
+    ((> (myLength auxMax) (myLength max)) (getMaxNodes tree auxMax (getNodesFromLevel tree (+ 1 currentLevel)) currentLevel (+ 1 currentLevel)))
+    (t (getMaxNodes tree max (getNodesFromLevel tree (+ 1 currentLevel)) maxLevel (+ 1 currentLevel)))
+  )
+)
+
+(defun main(tree)
+  (getMaxNodes tree '() (getNodesFromLevel tree 0) -1 0)
+)

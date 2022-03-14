@@ -1,0 +1,26 @@
+8. Write a function to determine the number of nodes on the level k from a n-tree represented as follows:
+(root list_nodes_subtree1 ... list_nodes_subtreen)
+Eg: tree is (a (b (c)) (d) (e (f))) and k=1 => 3 nodes
+
+
+countK(l, k)
+	= 1, if l is an atom and k = 0
+	= 0, if l is an atom and k != 0
+	= + (countK(li, k-1)), if l is a list
+
+mainCount(l, k) = countK(l, k+1)
+
+
+(defun countK (l k)
+  (cond
+        ((and (atom l) (= k 0)) 1)
+        ((atom l) 0)
+        (t (apply '+ (mapcar #'(lambda (a) (countK a (- k 1))) l)))
+   )
+)
+
+(defun mainCount(l k)
+  (countK l (+ 1 k))
+)
+
+

@@ -1,0 +1,47 @@
+6. Write a function that returns the maximum of numeric atoms in a list, at any level.
+
+
+maxNumber(a, b)
+	= nil, if a is not a number and b is not a number
+	= a, if b is not a number
+	= b, if a is not a number
+	= a, a>=b
+	= b, otherwise
+
+maxLinearList(l)
+	= nil, if l is empty
+	= maxNumber(car l, maxLinearList cdr l)
+
+
+maxNonLinearList(l)
+	= l, if l is a number
+	= nil, if l is an atom
+	= maxLinearList(U maxNonLinearList(li)), if l is a list
+
+
+
+(defun maxNumber (a b)
+  (cond
+      ((and (not(numberp a)) (not(numberp b))) nil)
+      ((not(numberp a)) b)
+      ((not(numberp b)) a)
+      ((or (> a b) (= a b)) a)
+      (t b)
+   )
+)
+
+(defun maxLinear(l)
+  (cond
+     ((null l) nil)
+     (t (maxNumber (car l) (maxLinear (cdr l))))
+   )
+)
+
+(defun maxNonLinear(l)
+  (cond
+       ((numberp l)  l)
+       ((atom l) nil)
+       (t (apply #'maxLinear (list (mapcar #'maxNonLinear l))))
+   )
+)
+

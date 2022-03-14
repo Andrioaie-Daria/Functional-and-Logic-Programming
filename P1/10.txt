@@ -1,0 +1,53 @@
+10.
+a. Define a predicate to test if a list of an integer elements has a "valley" aspect (a set has a "valley" aspect if
+elements decrease up to a certain point and then increase.
+eg: 10 8 6 9 11 13 – has a “valley” aspect
+
+b. Calculate the alternate sum of list’s elements (l1 - l2 + l3 ...).
+
+mainValley(l1l2...ln) = valley(l1l2..ln, -1), if length(l1l2..ln) >=3 and l1>l2
+
+valley(l1l2..ln, k)
+	= true, if n = 1 and k = 1    // if it finished the list with an increasing trend
+	= false, if n = 1 and k = -1  // if it the list is finished, but the trend was not increasing by the end
+	= false, if k = 1 and l1 > l2 // if it starts to decrease again, one it had an increasing trend
+	= valley(l2.. ln, k), if k = -1 and l1 > l2  // if it continues the decreasing trend
+	= valley(l2..ln, 1), if k = -1 and l1 < l2 // if it is the first time changing the trend from decreasing to increasing
+	= valley(l2...ln, k), if k = 1 and l1 < l2 // if it continues the increasing trend
+	
+
+%mainValley(L-list)
+mainValley(L):-
+    L = [H1, H2, _|_],
+    H1 > H2,
+    valley(L, -1).
+
+% K is -1 for decreasing
+% K is 1 for increasing
+valley([_], 1):-!.
+valley([H1, H2|T], K):-
+	    H1 > H2,
+    	K =:= -1,
+    	!,
+    	valley([H2|T], K).
+valley([H1, H2|T], _):-
+	    H1 < H2,
+    	valley([H2|T], 1).
+
+
+% b
+
+% Model matematic:
+% alternative_sum(l1...ln) =
+% 	0, n = 0
+% 	l1, n = 1
+% 	l1 - l2 + alternative_sum(l3...ln), otherwise
+
+% alternative_sum(L:list, R:number)
+% alternative_sum(i, o)
+
+alternative_sum([], 0).
+alternative_sum([H], H).
+alternative_sum([H1, H2|T], R) :-
+    alternative_sum(T, R1),
+    R is H1 - H2 + R1.

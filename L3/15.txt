@@ -1,0 +1,43 @@
+;15. Write a function that reverses a list together with all its sublists elements, at any level.
+
+
+;without map function
+
+reverseList(l)
+	= nil, if l is null
+	= reverseList(l2...ln) U l1, if l1 is an atom
+	= revereseList(l2..ln) U reverseList(l1), otherwise
+
+
+myAppend(l k)
+	= k, if l is null
+	= l1 U myAppend(l2...ln, k), otherwise
+
+
+(defun myAppend(l k)
+  (cond
+      ((null l) k)
+      (t (cons (car l) (myAppend (cdr l) k)))
+   )
+)
+
+(defun reverseList(l)
+  (cond
+        ((null l) nil)
+        ((atom (car l)) (myAppend (reverseList (cdr l)) (list (car l))))
+        (t (myAppend (reverseList (cdr l)) (list(reverseList (car l)))))
+   )
+)
+
+; with map
+
+;reverseList(l) = 
+;   l, l is atom
+;   reverList(l1) U ... U reverseList(ln), otherwise
+
+(defun reverse2(l)
+  (cond
+      ((atom l) l)
+      (t (mapcar #'reverse2 (reverse l)))
+   )
+)

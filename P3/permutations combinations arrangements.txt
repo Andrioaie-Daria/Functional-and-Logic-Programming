@@ -1,0 +1,71 @@
+perm(l1....ln)
+	= [], if n=0
+	= insert(l1, perm(l2....ln)), otherwise
+
+insert(l1...ln, e)
+	= e U l1...ln
+	= l1 U insert(l2...ln, e)
+insert(L, E, [E|L]).
+insert([H|T], E, [H|R]):-
+	insert(T, E, R).
+
+perm([], []):-!.
+perm([H|T], R):-
+	perm(T, RT),
+	insert(RT, H, R).
+
+all_perm(L, R):-findall(P, perm(L, P), R).
+
+
+% Model matematic:
+% comb(l1...ln, k) =
+% 	[], k = 0
+% 	l1 + comb(l2...ln, k - 1), k > 0
+% 	comb(l2...ln, k), k > 0
+
+
+%comb(L-list, k-integer, R-result pair)
+comb(_, 0, []):-
+    !.
+comb([H|T], K, [H|R]):-
+    K1 is K-1,
+    comb(T, K1, R).
+comb([_|T], K, R):-
+    comb(T, K, R).
+
+
+all_comb(L, K, ALL):-findall(P, comb(L, K, P), ALL).
+
+
+
+arr(l1...ln, k) 
+	= [], if k=0
+	= arr(l2...ln, k), if k>0
+	= insert(l1, arr(l2...ln,k-1)), if k>0
+
+arr(_, 0, []):-!.
+arr([_|T], K, R):-
+	arr(T, K, R).
+arr([H|T], K, R):-
+	K1 is K-1,
+	arr(T, K1, RT),
+	insert(RT,H, R).
+
+all_arr(L, K, R):- findall(A, arr(L, K, A), R).
+
+
+
+
+%subsets of a list
+subs(l1....ln)
+	= [], if n=0
+	= l1 U subs(l2...ln), if n>0
+	= subs(l2...ln), if n>0
+
+subs([], []):-!.
+subs([H|T], [H|R]):-
+	subs(T, R).
+subs([_|T], R):-
+	subs(T, R).
+
+all_subsets(L, R):- findall(S, subs(L,S), R).

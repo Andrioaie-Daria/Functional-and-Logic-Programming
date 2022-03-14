@@ -1,0 +1,15 @@
+;7. Write a function that substitutes an element E with all elements of a list L1 at all levels of a given list L.
+
+substitute(l, e, k)
+	= k, if l is an atom and l=e
+	= l, if l is an atom
+	= U substitute(li, e, k), if l is a list
+
+
+(defun mySubstitute (l e p)
+  (cond
+    ((and (equal l e) (atom l)) p)
+    ( (atom l) l)
+    (t (mapcar #' (lambda (l) (mySubstitute l e p)) l))
+  )
+)

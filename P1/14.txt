@@ -1,0 +1,42 @@
+14.
+a. Write a predicate to test equality of two sets without using the set difference.
+
+length(l1...ln)
+	=0, if n = 0
+	= 1 + length(l2..ln).
+
+
+contains(l1...ln, e)
+	=false, if n=0
+	=true, if l1 = e
+	= contains(l2...ln, e), otherwise
+
+
+testEquality(l1...ln, k1...km)
+	= true, if n=0 and m=0
+	= testEquality(l2...ln, k1...km), if contains(k1...km, l1)
+	= false, otherwise
+
+
+mainTestEquality(l1...ln, k1...km)
+	= testEquality(l1...ln, k1...km), if length(l1...ln) = length(k1...km)
+
+% my_length(L -list, N - number)
+% my_length(i, o)
+my_length([], 0).
+my_length([_|T], C):- 
+    my_length(T, C1),
+    C is C1 + 1.
+
+mainTestEquality(L, K):-
+    my_length(L, LL),
+    my_length(K, LK),
+    LL =:= LK,
+    testEquality(L, K).
+
+testEquality([], _):-
+    !.
+
+testEquality([H|T], K):-
+    contains(K, H),
+    testEquality(T, K).

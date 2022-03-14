@@ -1,0 +1,38 @@
+----------------------- mathematical model ------------------------------
+arrangements(l1 l2 .. ln, k)=
+	= l1, if k=1
+	= arrangements(l2 ... ln, k), if k>=1
+	= insert(l1, arrangements(l2 .. ln, k-1)), if k>1
+
+
+insert(e, l1 l2 ... ln)=
+	= e U l1 l2 ... ln 
+	= l1 U insert(e, l2 l3 ... ln)
+
+
+
+%insert an element on all positions of a list
+% insert(E-element, l-list, R-result list)
+%flow(i,i,o)
+
+insert(E, L, [E|L]).
+insert(E, [H|T], [H|R]):-
+    insert(E, T, R).
+
+
+% arrangements of k elements in a list
+%arrangements(L-input lits, K-integer, R-result list)
+%flow(i,i,o)
+
+arrangements([H|_], 1, [H]).
+arrangements([_|T], K, R):-
+    arrangements(T, K, R).
+
+arrangements([H|T], K, R1):-
+    K>1,
+    K1 is K-1,
+    arrangements(T, K1, R),
+    insert(H, R, R1).
+
+mainArr(L, K, R):-
+    findall(RES, arrangements(L, K, RES), R).

@@ -1,0 +1,62 @@
+5.
+a. Write a predicate to compute the union of two sets.
+b. Write a predicate to determine the set of all the pairs of elements in a list.
+Eg.: L = [a b c d] => [[a b] [a c] [a d] [b c] [b d] [c d]].
+
+
+%remove_occurences(l1...ln, e) =
+%    [], n = 0
+%    l1 + remove_occurences(l2...ln, e), l1 != e
+%    remove_occurences(l2...ln, e), l1 = e
+
+% remove_occurences(L:list, E:number, R:list)
+% remove_occurences(i, i, o)
+
+remove_occurences([], _, []).
+remove_occurences([H|T], E, R) :- 
+     H =:= E,
+    remove_occurences(T, E, R).
+remove_occurences([H|T], E, [H|R]) :-
+    H =\= E,
+    remove_occurences(T, E, R).
+
+% Model matematic:
+% union(a1...an, b1...bm) =
+% 	[], n = 0 and m = 0
+% 	a1 + union(a2...an, remove_occurences(b1...bm, a1)), n > 0
+% 	union(b1...bm, []), n = 0
+
+%union(A-set, B-set, R-result set)
+union([], [], []):-
+    !.
+union([H|T], B, [H|R]):-
+    !,
+    remove_occurences(B, H, BRemoved),
+    union(T, BRemoved, R).
+union([], B, R):-
+    union(B, [], R).
+
+
+% b
+
+% Model matematic:
+% sets(l1...ln, k) =
+% 	[], k = 0
+% 	l1 + sets(l2...ln, k - 1), k > 0
+% 	sets(l2...ln, k), k > 0
+
+% sets(L:list, K:number, R:list)
+% sets(i, i, o)
+
+
+%pairs(L-list, k-integer, R-result pair)
+pairs(_, 0, []):-
+    !.
+pairs([H|T], K, [H|R]):-
+    K1 is K-1,
+    pairs(T, K1, R).
+pairs([_|T], K, R):-
+    pairs(T, K, R).
+
+
+all_pairs(L, ALL):-findall(P, pairs(L, 2, P), ALL).

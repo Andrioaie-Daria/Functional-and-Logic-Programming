@@ -1,0 +1,45 @@
+6.
+a. Write a predicate to test if a list is a set.
+b. Write a predicate to remove the first three occurrences of an element in a list. If the element occurs less
+than three times, all occurrences will be removed.
+
+
+a.
+isSet(l1...ln) = 
+	= true, if n = 0
+	= false, if nr_occurrences(l1...ln, l1) >1
+	= isSet(l2...ln)
+
+
+%isSet(L-list)
+
+isSet([]).
+isSet([H|T]):-
+    count_occ(T, H, Nr),
+    Nr = 0,
+    isSet(T).
+
+
+b.
+remove_k_occurences(l1...ln, e, k)
+	= [], if n=0
+	= l1...ln, if k = 0
+	= l1 U remove_k_occurrences(l2....ln, e, k), if l1 != e
+	= remove_k_occurrences(l2...ln, e, k-1), if l1 == e
+
+
+%remove_k_occurrences(L-list, E-element, K-integer, R-result)
+remove_k_occurrences([], _, _, []):-
+    !.
+remove_k_occurrences(L, _, 0, L):-
+    !.
+remove_k_occurrences([H|T], E, K, [H|R]):-
+    H =\= E,
+    !,
+    remove_k_occurrences(T, E, K, R).
+
+remove_k_occurrences([_|T], E, K, R):-
+    K1 is K-1,
+    remove_k_occurrences(T, E, K1, R).
+ 
+remove_3_occurrences(L, E, R):- remove_k_occurrences(L, E, 3, R).

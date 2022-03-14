@@ -1,0 +1,16 @@
+8. Return the list of nodes of a tree of type (2) accessed inorder.
+
+
+(A (B) (C (D) (E)))
+
+inorder(l1l2l3)
+	= [], if l1l2l3 is empty
+	= inorder(l2) U l1 U inorder(l3), if l1l2l3 is a tree
+
+
+(defun inorder(tree)
+  (cond
+       ((null tree) nil)
+       (t (append (inorder (cadr tree)) (list (car tree)) (inorder (caddr tree))))
+  )
+)
